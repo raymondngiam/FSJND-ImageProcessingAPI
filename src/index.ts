@@ -10,3 +10,8 @@ app.get('/',(req,res)=>{
 app.listen(port,()=>{
     console.log(`Server started at http://localhost:${port}`);
 });
+
+// for dummy test
+function add(a: number, b: number):number{ return a + b };
+
+export default {add};
