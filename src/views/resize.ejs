@@ -5,7 +5,12 @@
 <body>
     <h2>Image Processing API</h2>
     <div>
-        <image src="../public/images/<%= data.filename %>"></image>
+        <% if (data.hasImage) {%>
+            <image src="../public/images/<%= data.filename %>"></image>
+        <% } else { %>
+            <h3>Invalid image file name! Please try again.</h3>
+        <%} %>
+
     </div>
 </body>
 </html>

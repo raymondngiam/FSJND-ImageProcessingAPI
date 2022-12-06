@@ -1,6 +1,6 @@
 import imgproc from '../../modules/imgproc';
 import path from 'path';
-import fs from 'fs';
+import dirHelper from '../../utils/dirHelper';
 
 describe('Test shape function', () => {
   it('should return null for invalid image path input', async () => {
@@ -36,7 +36,7 @@ describe('Test resize function', () => {
       __dirname,
       '../../public/thumbnails/icelandwaterfall.jpg'
     );
-    createDirIfNotExists(output);
+    dirHelper.createDirIfNotExists(output);
     const result = await imgproc.resize(input, output, 100, 100);
     expect(result).toEqual(output);
   });
@@ -49,16 +49,9 @@ describe('Test resize function', () => {
       __dirname,
       '../../public/thumbnails/icelandwaterfall.jpg'
     );
-    createDirIfNotExists(output);
+    dirHelper.createDirIfNotExists(output);
     const result = await imgproc.resize(input, output, 100, 100);
     const size = await imgproc.shape(result as unknown as string);
     expect(size).toEqual([100, 100]);
   });
 });
-
-function createDirIfNotExists(filePath: string) {
-  const dir = path.dirname(filePath);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-}
