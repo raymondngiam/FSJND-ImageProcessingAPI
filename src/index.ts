@@ -16,9 +16,4 @@ app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });
 
-// for dummy test
-const add = (a: number, b: number): number => {
-  return a + b;
-};
-
-export default { add };
+export default app;
