@@ -1,4 +1,7 @@
 import sharp from 'sharp';
+import fs from 'fs';
+import path from 'path';
+import dirHelper from '../utils/dirHelper';
 
 async function resize(
   inputPath: string,
@@ -7,6 +10,7 @@ async function resize(
   height: number
 ): Promise<string | null> {
   try {
+    dirHelper.createDirIfNotExists(outputPath);
     await sharp(inputPath).resize(width, height).toFile(outputPath);
     return outputPath;
   } catch (error) {
