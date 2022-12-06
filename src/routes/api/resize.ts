@@ -8,7 +8,7 @@ const resize = express.Router();
 resize.get('/', async (req, res) => {
   const query = req.query;
   const filename = query.filename;
-  let finalImage: string = '';
+  let finalImage = '';
   let hasImage: boolean;
   if (filename != undefined) {
     const imgDir = path.resolve(__dirname, '../../public/images');
@@ -28,8 +28,8 @@ resize.get('/', async (req, res) => {
         const outDir = path.resolve(__dirname, '../../public/thumbnails');
         const outputPath = path.join(outDir, filename as string);
 
-        let resizeWidth: number = 0;
-        let resizeHeight: number = 0;
+        let resizeWidth = 0;
+        let resizeHeight = 0;
 
         if (width == undefined && height != undefined) {
           // if only height is specified
@@ -55,7 +55,7 @@ resize.get('/', async (req, res) => {
           finalImage = path.join('thumbnails', filename as string);
         }
       } else {
-        finalImage = path.join('images', filename as string);
+        finalImage = path.join('images', filename as string); // if valid filename, but without width/height, display raw image
       }
     } else {
       hasImage = false; // specified filename not found in `/public/images`

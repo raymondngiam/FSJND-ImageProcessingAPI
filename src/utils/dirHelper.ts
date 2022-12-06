@@ -11,7 +11,7 @@ function createDirIfNotExists(filePath: string) {
 async function ListDirectory(dir: string): Promise<string[] | null> {
   try {
     const files = await fs.promises.readdir(dir);
-    let filenames = new Array<string>();
+    const filenames = new Array<string>();
     files.forEach((f) => {
       filenames.push(path.basename(f));
     });

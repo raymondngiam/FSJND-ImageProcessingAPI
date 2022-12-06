@@ -1,6 +1,4 @@
 import sharp from 'sharp';
-import fs from 'fs';
-import path from 'path';
 import dirHelper from '../utils/dirHelper';
 
 async function resize(
