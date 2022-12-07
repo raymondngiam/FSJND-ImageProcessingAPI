@@ -6,7 +6,11 @@
     <h2>Image Processing API</h2>
     <div>
         <% if (data.hasImage) {%>
-            <image src="../public/<%= data.filename %>"></image>
+            <% if (!data.hasError) {%>
+                <image src="../public/<%= data.filename %>"></image>
+            <% } else { %>
+                <h3>Failed in image processing! Please try again.</h3>
+            <%} %>
         <% } else { %>
             <h3>Invalid image file name! Please try again.</h3>
         <%} %>

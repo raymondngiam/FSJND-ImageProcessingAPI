@@ -6,10 +6,13 @@ import imgproc from '../../modules/imgproc';
 const resize = express.Router();
 
 resize.get('/', async (req, res) => {
+  console.log('');
+  console.log(`request: ${req.url}`);
   const query = req.query;
   const filename = query.filename;
   let finalImage = '';
   let hasImage: boolean;
+  let hasError = false;
   if (filename != undefined) {
     const imgDir = path.resolve(__dirname, '../../public/images');
     const files = await dirHelper.ListDirectory(imgDir);
@@ -25,9 +28,6 @@ resize.get('/', async (req, res) => {
       const width = query.width;
       const height = query.height;
       if (width != undefined || height != undefined) {
-        const outDir = path.resolve(__dirname, '../../public/thumbnails');
-        const outputPath = path.join(outDir, filename as string);
-
         let resizeWidth = 0;
         let resizeHeight = 0;
 
@@ -45,15 +45,36 @@ resize.get('/', async (req, res) => {
           resizeHeight = parseInt(height as string);
         }
 
-        const writtenPath = await imgproc.resize(
-          inputPath,
-          outputPath,
-          resizeWidth,
-          resizeHeight
-        );
-        if (writtenPath != null) {
-          finalImage = path.join('thumbnails', filename as string);
+        const outDir = path.resolve(__dirname, '../../public/thumbnails');
+        const splitted = (filename as string).split('.');
+        const name = splitted[0];
+        const ext = splitted[1];
+        const outputName = `${name}_${resizeWidth}_${resizeHeight}.${ext}`;
+        const outputPath = path.join(outDir, outputName);
+
+        // check for cached images
+        const files = await dirHelper.ListDirectory(outDir);
+        const filesSet = new Set(files);
+        const hasCached = filesSet.has(outputName);
+
+        if (!hasCached) {
+          const writtenPath = await imgproc.resize(
+            inputPath,
+            outputPath,
+            resizeWidth,
+            resizeHeight
+          );
+          if (writtenPath == null) {
+            hasError = true;
+            console.error('Failed in image resizing.');
+          } else {
+            console.log('Serve newly resized image.');
+          }
+        } else {
+          console.log('Serve cached image.');
         }
+        finalImage = path.join('thumbnails', outputName);
+        console.log(`Image filename: ${finalImage}`);
       } else {
         finalImage = path.join('images', filename as string); // if valid filename, but without width/height, display raw image
       }
@@ -63,7 +84,9 @@ resize.get('/', async (req, res) => {
   } else {
     hasImage = false; // filename query is undefined
   }
-  res.render('resize', { data: { filename: finalImage, hasImage: hasImage } });
+  res.render('resize', {
+    data: { filename: finalImage, hasImage: hasImage, hasError: hasError }
+  });
 });
 
 export default resize;
