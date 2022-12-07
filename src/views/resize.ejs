@@ -5,16 +5,11 @@
 <body>
     <h2>Image Processing API</h2>
     <div>
-        <% if (data.hasImage) {%>
-            <% if (!data.hasError) {%>
-                <image src="../public/<%= data.filename %>"></image>
-            <% } else { %>
-                <h3>Failed in image processing! Please try again.</h3>
-            <%} %>
+        <% if (!data.hasError) {%>
+            <image src="../public/<%= data.filename %>"></image>
         <% } else { %>
-            <h3>Invalid image file name! Please try again.</h3>
+            <h3><%= data.errorMessage %> Please try again.</h3>
         <%} %>
-
     </div>
 </body>
 </html>
