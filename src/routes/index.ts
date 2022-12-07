@@ -3,7 +3,7 @@ import resize from './api/resize';
 
 const routes = express.Router();
 
-routes.get('/', (req, res) => {
+routes.get('/', (req: express.Request, res: express.Response): void => {
   res.render('index');
 });
 

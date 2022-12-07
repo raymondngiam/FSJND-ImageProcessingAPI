@@ -5,7 +5,7 @@ import imgproc from '../../modules/imgproc';
 
 const resize = express.Router();
 
-resize.get('/', async (req, res) => {
+resize.get('/', async (req:express.Request, res:express.Response):Promise<void> => {
   console.log('');
   console.log(`request: ${req.url}`);
   const query = req.query;
