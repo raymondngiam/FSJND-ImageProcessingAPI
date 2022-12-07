@@ -52,12 +52,20 @@ resize.get(
             resizeHeight = parseInt(height as string);
           }
 
-          // check for valid parsed integer
+          // check for valid parsed integer - not NaN
           if (Number.isNaN(resizeWidth) || Number.isNaN(resizeHeight)) {
             errorMessage =
               "Invalid input! Please provide 'width' or 'height' in numbers.";
             hasError = true;
           } else {
+
+            // check for valid parsed integer - non negative
+            if (resizeWidth<0 || resizeHeight<0){
+              errorMessage =
+              "Invalid input! Please provide non-negative 'width' or 'height'.";
+              hasError = true;
+            }
+            else {
             const outDir = path.resolve(__dirname, '../../public/thumbnails');
             const splitted = (filename as string).split('.');
             const name = splitted[0];
@@ -89,6 +97,7 @@ resize.get(
             finalImage = path.join('thumbnails', outputName);
             console.log(`Image filename: ${finalImage}`);
           }
+        }
         } else {
           errorMessage = "Invalid input! Please provide 'width' or 'height'"; // if valid filename, but without width/height
           hasError = true;
